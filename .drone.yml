@@ -73,15 +73,22 @@ type: docker
 name: build release
 trigger:
   event:
+  - promote
   - tag
 
 steps:
 - name: create documentation
+  when:
+    event:
+    - tag
   image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
   commands:
   - cargo doc --no-deps --lib
 
 - name: create release on gitea
+  when:
+    event:
+    - tag
   image: plugins/gitea-release
   settings:
     base_url:
@@ -91,6 +98,11 @@ steps:
     title: "Version ${DRONE_TAG}"
 
 - name: publish on crates.io
+  when:
+    event:
+    - promote
+    target:
+    - crates.io
   image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
   environment:
     CRATES_IO_TOKEN:
