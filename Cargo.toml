@@ -1,6 +1,6 @@
 [package]
 name = "rinfluxdb"
-version = "0.1.0"
+version = "0.2.0-pre"
 repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"
