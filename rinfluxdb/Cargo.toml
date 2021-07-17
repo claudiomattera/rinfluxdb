@@ -1,0 +1,39 @@
+[package]
+name = "rinfluxdb"
+version = "0.2.0-pre"
+repository = "https://gitlab.com/claudiomattera/rinfluxdb"
+authors = ["Claudio Mattera <dev@claudiomattera.it>"]
+description = "A library for querying and posting data to InfluxDB"
+edition = "2018"
+license = "MIT"
+readme = "Readme.md"
+exclude = [
+    ".drone.yml",
+]
+keywords = [
+    "influxdb",
+    "timeseries",
+]
+categories = [
+    "database",
+]
+
+
+[lib]
+name = "rinfluxdb"
+path = "src/lib.rs"
+
+[features]
+default = ["client", "lineprotocol", "influxql", "flux", "dataframe"]
+client = ["rinfluxdb-lineprotocol/client", "rinfluxdb-influxql/client", "rinfluxdb-flux/client"]
+lineprotocol = ["rinfluxdb-lineprotocol"]
+influxql = ["rinfluxdb-influxql"]
+flux = ["rinfluxdb-flux"]
+dataframe = ["rinfluxdb-dataframe"]
+
+[dependencies]
+rinfluxdb-types = { version = "=0.2.0-pre", path = "../rinfluxdb-types" }
+rinfluxdb-dataframe = { version = "=0.2.0-pre", path = "../rinfluxdb-dataframe", optional = true }
+rinfluxdb-lineprotocol = { version = "=0.2.0-pre", path = "../rinfluxdb-lineprotocol", default-features = false, optional = true }
+rinfluxdb-influxql = { version = "=0.2.0-pre", path = "../rinfluxdb-influxql", default-features = false, optional = true }
+rinfluxdb-flux = { version = "=0.2.0-pre", path = "../rinfluxdb-flux", default-features = false, optional = true }

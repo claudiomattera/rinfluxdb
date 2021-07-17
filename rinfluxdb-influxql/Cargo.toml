@@ -1,0 +1,55 @@
+[package]
+name = "rinfluxdb-influxql"
+version = "0.2.0-pre"
+repository = "https://gitlab.com/claudiomattera/rinfluxdb"
+authors = ["Claudio Mattera <dev@claudiomattera.it>"]
+description = "A library for querying and posting data to InfluxDB"
+edition = "2018"
+license = "MIT"
+readme = "Readme.md"
+exclude = [
+    ".drone.yml",
+]
+keywords = [
+    "influxdb",
+    "timeseries",
+]
+categories = [
+    "database",
+]
+
+
+[lib]
+name = "rinfluxdb_influxql"
+path = "src/lib.rs"
+
+[features]
+default = ["client"]
+client = ["reqwest", "url"]
+
+[dependencies]
+thiserror = "1.0"
+tracing = "0.1"
+chrono = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+itertools = "0.10"
+async-trait = "0.1"
+reqwest = { version = "0.11", features = ["blocking"], optional = true }
+url = { version = "2", features = ["serde"], optional = true }
+rinfluxdb-types = { version = "=0.2.0-pre", path = "../rinfluxdb-types" }
+
+[dev-dependencies]
+rinfluxdb-dataframe = { version = "=0.2.0-pre", path = "../rinfluxdb-dataframe" }
+
+anyhow = "1"
+
+structopt = "0.3"
+
+tracing-subscriber = { version = "0.2", features = ["registry", "env-filter"] }
+tracing-log = "0.1"
+
+httpmock = "0.5"
+
+# Used in doc tests
+async-std = "1"

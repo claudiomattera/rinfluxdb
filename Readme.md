@@ -301,6 +301,49 @@ Wrappers are defined for both Reqwest's blocking API (`influxql::blocking::Influ
 [Reqwest]: https://lib.rs/crates/reqwest
 
 
+Usage
+----
+
+This crate is a simple aggregator over smaller crates, each enabled by a Cargo feature and implementing a specific part of InfluxDB support.
+
+~~~~plain
+rinfluxdb
+├── rinfluxdb-types
+├── rinfluxdb-lineprotocol
+├── rinfluxdb-influxql
+├── rinfluxdb-flux
+└── rinfluxdb-dataframe
+~~~~
+
+Clients can either depend on `rinfluxdb` enabling the necessary features, or they can depend explicitly on the `rinfluxdb-*` crates.
+
+~~~~toml
+[dependencies.rinfluxdb]
+version = "0.2.0"
+features = ["lineprotocol", "influxql", "client"]
+
+# Or
+
+[dependencies]
+rinfluxdb-lineprotocol = { version = "0.2.0", features = ["client"] }
+rinfluxdb-influxql = { version = "0.2.0", features = ["client"] }
+~~~~
+
+
+### Cargo Features
+
+This crate supports the following Cargo features.
+
+* `lineprotocol`: re-exports `rinfluxdb-lineprotocol` crate;
+* `influxql`: re-exports `rinfluxdb-influxql` crate;
+* `flux`: re-exports `rinfluxdb-flux` crate;
+* `dataframe`: re-exports `rinfluxdb-dataframe` crate;
+* `client`: enables feature `client` in all `rinfluxdb-*` crates.
+
+When feature `client` is enabled, the crates define clients for line protocol, InfluxQL and Flux.
+Clients are implemented using [Reqwest], and are available both for blocking and async mode.
+
+
 License
 ----
 

@@ -1,0 +1,52 @@
+[package]
+name = "rinfluxdb-lineprotocol"
+version = "0.2.0-pre"
+repository = "https://gitlab.com/claudiomattera/rinfluxdb"
+authors = ["Claudio Mattera <dev@claudiomattera.it>"]
+description = "A library for querying and posting data to InfluxDB"
+edition = "2018"
+license = "MIT"
+readme = "Readme.md"
+exclude = [
+    ".drone.yml",
+]
+keywords = [
+    "influxdb",
+    "timeseries",
+]
+categories = [
+    "database",
+]
+
+
+[lib]
+name = "rinfluxdb_lineprotocol"
+path = "src/lib.rs"
+
+[features]
+default = ["client"]
+client = ["reqwest", "url", "serde", "async-trait"]
+
+[dependencies]
+thiserror = "1.0"
+tracing = "0.1"
+chrono = "0.4"
+serde_json = "1"
+async-trait = { version = "0.1", optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+reqwest = { version = "0.11", features = ["blocking"], optional = true }
+url = { version = "2", features = ["serde"], optional = true }
+
+[dev-dependencies]
+fake = "2"
+quickcheck = "1"
+quickcheck_macros = "1"
+anyhow = "1"
+
+tracing-subscriber = { version = "0.2", features = ["registry", "env-filter"] }
+tracing-log = "0.1"
+
+httpmock = "0.5"
+
+# Used in doc tests
+async-std = "1"

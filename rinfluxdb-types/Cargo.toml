@@ -1,0 +1,29 @@
+[package]
+name = "rinfluxdb-types"
+version = "0.2.0-pre"
+repository = "https://gitlab.com/claudiomattera/rinfluxdb"
+authors = ["Claudio Mattera <dev@claudiomattera.it>"]
+description = "A library for querying and posting data to InfluxDB"
+edition = "2018"
+license = "MIT"
+readme = "Readme.md"
+exclude = [
+    ".drone.yml",
+]
+keywords = [
+    "influxdb",
+    "timeseries",
+]
+categories = [
+    "database",
+]
+
+
+[lib]
+name = "rinfluxdb_types"
+path = "src/lib.rs"
+
+[dependencies]
+tracing = "0.1"
+chrono = "0.4"
+thiserror = "1"
