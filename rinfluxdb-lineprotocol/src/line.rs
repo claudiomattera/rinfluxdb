@@ -15,7 +15,7 @@ use super::Measurement;
 use super::TagName;
 use super::TagValue;
 
-/// Represent a line
+/// A line in the Influx Line Protocol
 #[derive(Clone, Debug, PartialEq)]
 pub struct Line {
     measurement: Measurement,

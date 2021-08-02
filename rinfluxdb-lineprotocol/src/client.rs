@@ -37,7 +37,7 @@ pub enum ClientError {
 }
 
 fn parse_error(text: &str) -> ClientError {
-    let response: Result<Response, _> = from_str(&text);
+    let response: Result<Response, _> = from_str(text);
     match response {
         Ok(response) => {
             if response.error.starts_with("field type conflict") {

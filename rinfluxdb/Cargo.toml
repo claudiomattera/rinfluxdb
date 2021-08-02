@@ -37,3 +37,8 @@ rinfluxdb-dataframe = { version = "=0.2.0-pre", path = "../rinfluxdb-dataframe",
 rinfluxdb-lineprotocol = { version = "=0.2.0-pre", path = "../rinfluxdb-lineprotocol", default-features = false, optional = true }
 rinfluxdb-influxql = { version = "=0.2.0-pre", path = "../rinfluxdb-influxql", default-features = false, optional = true }
 rinfluxdb-flux = { version = "=0.2.0-pre", path = "../rinfluxdb-flux", default-features = false, optional = true }
+
+[dev-dependencies]
+chrono = "0.4"
+url = "2"
+reqwest = { version = "0.11", features = ["blocking"] }

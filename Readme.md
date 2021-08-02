@@ -29,14 +29,14 @@ The [line protocol] is used to send data to InfluxDB.
 use rinfluxdb::line_protocol::LineBuilder;
 use chrono::{TimeZone, Utc};
 
-let line = LineBuilder::new("measurement")
+let line = LineBuilder::new("location")
     .insert_field("latitude", 55.383333)
     .insert_field("longitude", 10.383333)
     .insert_tag("city", "Odense")
     .set_timestamp(Utc.ymd(2014, 7, 8).and_hms(9, 10, 11))
     .build();
 
-assert_eq!(line.measurement(), &"measurement".into());
+assert_eq!(line.measurement(), &"location".into());
 assert_eq!(line.field("latitude"), Some(&55.383333.into()));
 assert_eq!(line.field("longitude"), Some(&10.383333.into()));
 assert_eq!(line.tag("city"), Some(&"Odense".into()));
@@ -120,13 +120,14 @@ A dummy implementation of a dataframe is available as `dataframe::DataFrame`, bu
 
 JSON responses to InfluxQL queries can be parsed to dataframes.
 
-~~~~rust
-use rinfluxdb::influxql::{ResponseError, from_str};
+~~~~no_run
+use rinfluxdb::influxql::{ResponseError, StatementResult, from_str};
 use rinfluxdb::dataframe::DataFrame;
 
-let response: String = ...;
+let input: String = todo!();
 
-let response: Vec<Result<Vec<(DataFrame, Option<Tags>)>, ResponseError>> = from_str(input)?;
+let response: Result<Vec<StatementResult<DataFrame>>, ResponseError> =
+    from_str(&input);
 ~~~~
 
 
@@ -134,13 +135,13 @@ let response: Vec<Result<Vec<(DataFrame, Option<Tags>)>, ResponseError>> = from_
 
 Annotated CSV responses to FLUX queries can be parsed.
 
-~~~~rust
+~~~~no_run
 use rinfluxdb::flux::{ResponseError, from_str};
 use rinfluxdb::dataframe::DataFrame;
 
-let response: String = ...;
+let input: String = todo!();
 
-let response: Vec<Result<Vec<(DataFrame, Option<Tags>)>, ResponseError>> = from_str(input)?;
+let response: Result<DataFrame, ResponseError> = from_str(&input);
 ~~~~
 
 
@@ -155,9 +156,10 @@ Clients are enabled using the `client` Cargo feature.
 
 #### Query InfluxDB with InfluxQL
 
-~~~~rust
-use std::collections::HashMap;
-use url::Url;
+~~~~no_run
+# use std::collections::HashMap;
+# use url::Url;
+#
 use rinfluxdb::influxql::QueryBuilder;
 use rinfluxdb::influxql::blocking::Client;
 use rinfluxdb::dataframe::DataFrame;
@@ -181,24 +183,28 @@ let query = QueryBuilder::from("indoor_environment")
     .field("humidity")
     .group_by("room")
     .build();
-let tagged_dataframes: HashMap<String, DataFrame> = client.fetch_dataframes_by_tag(query, "room")?;
+let tagged_dataframes: HashMap<String, DataFrame> = 
+    client.fetch_dataframes_by_tag(query, "room")?;
 for (tag, dataframe) in tagged_dataframes {
     println!("{}: {}", tag, dataframe);
 }
+
+# Ok::<(), rinfluxdb::influxql::ClientError>(())
 ~~~~
 
 
 #### Query InfluxDB with FLUX
 
-~~~~rust
+~~~~ignore
 unimplemented!()
 ~~~~
 
 
 #### Send Data to InfluxDB using the Line Protocol
 
-~~~~rust
-use url::Url;
+~~~~no_run
+# use url::Url;
+#
 use rinfluxdb::line_protocol::LineBuilder;
 use rinfluxdb::line_protocol::blocking::Client;
 
@@ -218,6 +224,8 @@ let lines = vec![
 ];
 
 client.send("database", &lines)?;
+
+# Ok::<(), rinfluxdb::line_protocol::ClientError>(())
 ~~~~
 
 
@@ -229,7 +237,11 @@ The content of HTTP requests and responses must follow InfluxDB conventions and 
 In order to ensure maximal freedom, a tiny wrapper is constructed around Reqwest's `Client`, so that it can create a request builder already prepared to communicate with InfluxDB.
 Such builder can be then converted to a regular request builder and executed.
 
-~~~~rust
+~~~~no_run
+# use url::Url;
+#
+use rinfluxdb::influxql::Query;
+
 // Bring into scope the trait implementation
 use rinfluxdb::influxql::blocking::InfluxqlClientWrapper;
 
@@ -245,7 +257,7 @@ let mut builder = client
     .database("house")
     .query(Query::new("SELECT temperature FROM indoor_temperature"))
     // (this function returns a regular Reqwest builder)
-    .to_reqwest_builder();
+    .into_reqwest_builder();
 
 // Now this is a regular Reqwest builder, and can be customized as usual
 if let Some((username, password)) = Some(("username", "password")) {
@@ -257,12 +269,21 @@ let request = builder.build()?;
 
 // Execute the request through Reqwest and obtain a response
 let response = client.execute(request)?;
+
+# Ok::<(), rinfluxdb::influxql::ClientError>(())
 ~~~~
 
 
 Similarly, a tiny wrapper is constructed around Reqwest's `Response`, so that a new function is added to parse dataframes from it.
 
-~~~~rust
+~~~~no_run
+# use std::collections::HashMap;
+#
+# use url::Url;
+#
+use rinfluxdb::influxql::Query;
+
+use rinfluxdb::influxql::StatementResult;
 use rinfluxdb::influxql::blocking::InfluxqlClientWrapper;
 use rinfluxdb::dataframe::DataFrame;
 
@@ -278,7 +299,7 @@ let mut request = client
     .influxql(&base_url)?
     .database("house")
     .query(Query::new("SELECT temperature FROM indoor_temperature"))
-    .to_reqwest_builder()
+    .into_reqwest_builder()
     .build()?;
 
 // Execute the request through Reqwest and obtain a response
@@ -290,8 +311,9 @@ let response = response.error_for_status()?;
 
 // Parse the response from JSON to a list of dataframes
 // (this is a function added by the trait above)
-let results: Vec<Result<Vec<(DataFrame, Option<HashMap<String, String>>)>, eError>>
-    = response.dataframes()?;
+let results: Vec<StatementResult<DataFrame>> = response.dataframes()?;
+
+# Ok::<(), rinfluxdb::influxql::ClientError>(())
 ~~~~
 
 

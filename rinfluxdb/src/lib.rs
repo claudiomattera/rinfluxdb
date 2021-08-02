@@ -3,12 +3,7 @@
 // See accompanying file License.txt, or online at
 // https://opensource.org/licenses/MIT
 
-//! Rust InfluxDB Library
-//! ====
-//!
-//! A library for querying and sending data to InfluxDB.
-//!
-//! <https://gitlab.com/claudiomattera/rinfluxdb>
+#![doc = include_str!("../../Readme.md")]
 
 pub use rinfluxdb_types as types;
 
@@ -66,7 +61,7 @@ pub type InfluxLineClient = line_protocol::blocking::Client;
 /// way
 pub type InfluxAsyncLineClient = line_protocol::r#async::Client;
 
-/// Represent a line in Influx Line Protocol
+/// A line in the Influx Line Protocol
 #[cfg(feature = "lineprotocol")]
 pub type InfluxLine = line_protocol::Line;
 
