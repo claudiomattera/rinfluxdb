@@ -19,6 +19,9 @@ pub use rinfluxdb_flux as flux;
 #[cfg(feature = "dataframe")]
 pub use rinfluxdb_dataframe as dataframe;
 
+#[cfg(feature = "polars")]
+pub use rinfluxdb_polars as polars;
+
 #[cfg(all(feature = "client", feature = "flux"))]
 /// A client for performing frequent Flux queries in a convenient way
 pub type FluxClient = flux::blocking::Client;

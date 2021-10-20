@@ -4,6 +4,7 @@ members = [
     "rinfluxdb-types",
     "rinfluxdb-lineprotocol",
     "rinfluxdb-dataframe",
+    "rinfluxdb-polars",
     "rinfluxdb-influxql",
     "rinfluxdb-flux",
 ]
