@@ -371,8 +371,14 @@ License
 
 Copyright Claudio Mattera 2021
 
-You are free to copy, modify, and distribute this application with attribution under the terms of the [MIT license]. See the [`License.txt`](./License.txt) file for details.
+
+You are free to copy, modify, and distribute this application with attribution under the terms of either
+
+ * Apache License, Version 2.0
+   ([LICENSE-Apache-2.0](./LICENSE-Apache-2.0) or https://opensource.org/licenses/Apache-2.0)
+ * MIT license
+   ([LICENSE-MIT](./LICENSE-MIT) or https://opensource.org/licenses/MIT)
+
+at your option.
 
 This project is entirely original work, and it is not affiliated with nor endorsed in any way by InfluxData.
-
-[MIT license]: https://opensource.org/licenses/MIT

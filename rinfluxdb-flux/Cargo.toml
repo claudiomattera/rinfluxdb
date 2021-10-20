@@ -5,7 +5,7 @@ repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"
 edition = "2018"
-license = "MIT"
+license = "MIT OR Apache-2.0"
 readme = "Readme.md"
 exclude = [
     ".drone.yml",
