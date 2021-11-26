@@ -37,6 +37,11 @@ steps:
   commands:
   - cargo fmt --all -- --check
 
+- name: check for all features combinations
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
+  commands:
+  - cargo hack check --offline --feature-powerset --no-dev-deps
+
 - name: run linter
   failure: ignore
   image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
