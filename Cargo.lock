@@ -1953,7 +1953,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "reqwest",
@@ -1968,7 +1968,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-dataframe"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "rinfluxdb-types",
@@ -1976,7 +1976,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-flux"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "csv",
@@ -1994,7 +1994,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-influxql"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "async-std",
@@ -2017,7 +2017,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-lineprotocol"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "async-std",
@@ -2039,7 +2039,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-polars"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "polars",
@@ -2048,7 +2048,7 @@ dependencies = [
 
 [[package]]
 name = "rinfluxdb-types"
-version = "0.2.0-pre"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "thiserror",

@@ -1,6 +1,6 @@
 [package]
 name = "rinfluxdb"
-version = "0.2.0-pre"
+version = "0.2.0"
 repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"
@@ -33,12 +33,12 @@ dataframe = ["rinfluxdb-dataframe"]
 polars = ["rinfluxdb-polars"]
 
 [dependencies]
-rinfluxdb-types = { version = "=0.2.0-pre", path = "../rinfluxdb-types" }
-rinfluxdb-dataframe = { version = "=0.2.0-pre", path = "../rinfluxdb-dataframe", optional = true }
-rinfluxdb-polars = { version = "=0.2.0-pre", path = "../rinfluxdb-polars", optional = true }
-rinfluxdb-lineprotocol = { version = "=0.2.0-pre", path = "../rinfluxdb-lineprotocol", default-features = false, optional = true }
-rinfluxdb-influxql = { version = "=0.2.0-pre", path = "../rinfluxdb-influxql", default-features = false, optional = true }
-rinfluxdb-flux = { version = "=0.2.0-pre", path = "../rinfluxdb-flux", default-features = false, optional = true }
+rinfluxdb-types = { version = "=0.2.0", path = "../rinfluxdb-types" }
+rinfluxdb-dataframe = { version = "=0.2.0", path = "../rinfluxdb-dataframe", optional = true }
+rinfluxdb-polars = { version = "=0.2.0", path = "../rinfluxdb-polars", optional = true }
+rinfluxdb-lineprotocol = { version = "=0.2.0", path = "../rinfluxdb-lineprotocol", default-features = false, optional = true }
+rinfluxdb-influxql = { version = "=0.2.0", path = "../rinfluxdb-influxql", default-features = false, optional = true }
+rinfluxdb-flux = { version = "=0.2.0", path = "../rinfluxdb-flux", default-features = false, optional = true }
 
 [dev-dependencies]
 chrono = "0.4"

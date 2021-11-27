@@ -1,6 +1,6 @@
 [package]
 name = "rinfluxdb-flux"
-version = "0.2.0-pre"
+version = "0.2.0"
 repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"
@@ -39,10 +39,10 @@ csv = "1.1"
 itertools = "0.10"
 reqwest = { version = "0.11", features = ["blocking"], optional = true }
 url = { version = "2", features = ["serde"], optional = true }
-rinfluxdb-types = { version = "=0.2.0-pre", path = "../rinfluxdb-types" }
+rinfluxdb-types = { version = "=0.2.0", path = "../rinfluxdb-types" }
 
 [dev-dependencies]
-rinfluxdb-dataframe = { version = "=0.2.0-pre", path = "../rinfluxdb-dataframe" }
+rinfluxdb-dataframe = { version = "=0.2.0", path = "../rinfluxdb-dataframe" }
 
 reqwest = { version = "0.11", features = ["blocking"] }
 structopt = "0.3"
