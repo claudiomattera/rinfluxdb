@@ -2,6 +2,10 @@
 kind: pipeline
 type: docker
 name: build and test
+environment:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  CARGO_HOME: "./.cargo_home/"
 trigger:
   event:
     exclude:
@@ -22,35 +26,48 @@ steps:
     root: drone
     restore: true
 
+- name: download dependencies
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
+  commands:
+  - cargo fetch --locked
+
 - name: check format
   failure: ignore
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
-  environment:
-    CARGO_HOME: "./.cargo_home/"
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
   - cargo fmt --all -- --check
 
+- name: check for all features combinations
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
+  commands:
+  - cargo hack check --offline --feature-powerset --no-dev-deps
+
 - name: run linter
   failure: ignore
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
-  environment:
-    CARGO_HOME: "./.cargo_home/"
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
-  - cargo clippy --all-targets --all-features -- -D warnings
+  - cargo clippy --frozen --all-targets --all-features -- -D warnings
 
 - name: build
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
-  environment:
-    CARGO_HOME: "./.cargo_home/"
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
-  - cargo build --all-targets --all-features
+  - cargo build --frozen --all-targets --all-features
+
+- name: build test
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
+  commands:
+  - cargo test --frozen --all-features --no-run
 
 - name: test
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
-  environment:
-    CARGO_HOME: "./.cargo_home/"
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
-  - cargo test
+  - cargo test --frozen --all-features -- --test-threads=1
+
+- name: prepare cache
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
+  commands:
+  - find ./target/debug -maxdepth 1 -type f -and -not -name xtask.exe -delete
+  - rm -rf ./target/.rustc_info.json
 
 - name: rebuild cache
   image: plugins/s3-cache
@@ -65,7 +82,8 @@ steps:
     rebuild: true
     mount:
       - ./target
-      - ./.cargo_home/registry/
+      # Environment variables are not supported here, so cannot use $CARGO_HOME
+      - ./.cargo_home
 
 ---
 kind: pipeline
@@ -73,15 +91,22 @@ type: docker
 name: build release
 trigger:
   event:
+  - promote
   - tag
 
 steps:
 - name: create documentation
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
+  when:
+    event:
+    - tag
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
-  - cargo doc --no-deps --lib
+  - cargo doc --no-deps --lib --all-features
 
 - name: create release on gitea
+  when:
+    event:
+    - tag
   image: plugins/gitea-release
   settings:
     base_url:
@@ -91,14 +116,45 @@ steps:
     title: "Version ${DRONE_TAG}"
 
 - name: publish on crates.io
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
+  when:
+    event:
+    - promote
+    target:
+    - crates.io
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   environment:
     CRATES_IO_TOKEN:
       from_secret: crates_io_token
   commands:
   - cargo login $${CRATES_IO_TOKEN}
+
+  - cd rinfluxdb-types
   - cargo publish
-  - cargo logout
+  - cd ..
+
+  - cd rinfluxdb-lineprotocol
+  - cargo publish
+  - cd ..
+
+  - cd rinfluxdb-dataframe
+  - cargo publish
+  - cd ..
+
+  - cd rinfluxdb-polars
+  - cargo publish
+  - cd ..
+
+  - cd rinfluxdb-influxql
+  - cargo publish
+  - cd ..
+
+  - cd rinfluxdb-flux
+  - cargo publish
+  - cd ..
+
+  - cd rinfluxdb
+  - cargo publish
+  - cd ..
 
 ---
 kind: pipeline
@@ -186,16 +242,16 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: daily security report
+name: security report
 trigger:
   event:
   - cron
   cron:
-  - daily
+  - security report
 
 steps:
 - name: check security advisories
-  image: docker.claudiomattera.it/claudiomattera/rust:1.52.0
+  image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
   - cargo audit --deny unsound --deny yanked
 
@@ -222,12 +278,12 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: weekly cache flush
+name: cache flush
 trigger:
   event:
   - cron
   cron:
-  - weekly
+  - cache flush
 
 steps:
 - name: flush cache
