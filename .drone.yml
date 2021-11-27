@@ -127,7 +127,34 @@ steps:
       from_secret: crates_io_token
   commands:
   - cargo login $${CRATES_IO_TOKEN}
+
+  - pushd rinfluxdb-types
   - cargo publish
+  - popd
+
+  - pushd rinfluxdb-lineprotocol
+  - cargo publish
+  - popd
+
+  - pushd rinfluxdb-dataframe
+  - cargo publish
+  - popd
+
+  - pushd rinfluxdb-polars
+  - cargo publish
+  - popd
+
+  - pushd rinfluxdb-influxql
+  - cargo publish
+  - popd
+
+  - pushd rinfluxdb-flux
+  - cargo publish
+  - popd
+
+  - pushd rinfluxdb
+  - cargo publish
+  - popd
 
 ---
 kind: pipeline
