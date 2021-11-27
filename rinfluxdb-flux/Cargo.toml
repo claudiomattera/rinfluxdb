@@ -23,6 +23,10 @@ categories = [
 name = "rinfluxdb_flux"
 path = "src/lib.rs"
 
+[[example]]
+name = "fetchreadingsflux"
+required-features = ["client"]
+
 [features]
 default = ["client"]
 client = ["reqwest", "url"]

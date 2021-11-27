@@ -23,6 +23,14 @@ categories = [
 name = "rinfluxdb_influxql"
 path = "src/lib.rs"
 
+[[example]]
+name = "fetchreadingsinfluxql"
+required-features = ["client"]
+
+[[test]]
+name = "influxql"
+required-features = ["client"]
+
 [features]
 default = ["client"]
 client = ["reqwest", "url"]

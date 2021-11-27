@@ -23,6 +23,10 @@ categories = [
 name = "rinfluxdb_lineprotocol"
 path = "src/lib.rs"
 
+[[test]]
+name = "line_protocol"
+required-features = ["client"]
+
 [features]
 default = ["client"]
 client = ["reqwest", "url", "serde", "async-trait"]
