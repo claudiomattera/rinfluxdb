@@ -101,7 +101,7 @@ steps:
     - tag
   image: docker.claudiomattera.it/claudiomattera/rust:1.56.1
   commands:
-  - cargo doc --frozen --no-deps --lib --all-features
+  - cargo doc --no-deps --lib --all-features
 
 - name: create release on gitea
   when:
@@ -128,33 +128,33 @@ steps:
   commands:
   - cargo login $${CRATES_IO_TOKEN}
 
-  - pushd rinfluxdb-types
+  - cd rinfluxdb-types
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb-lineprotocol
+  - cd rinfluxdb-lineprotocol
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb-dataframe
+  - cd rinfluxdb-dataframe
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb-polars
+  - cd rinfluxdb-polars
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb-influxql
+  - cd rinfluxdb-influxql
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb-flux
+  - cd rinfluxdb-flux
   - cargo publish
-  - popd
+  - cd ..
 
-  - pushd rinfluxdb
+  - cd rinfluxdb
   - cargo publish
-  - popd
+  - cd ..
 
 ---
 kind: pipeline
