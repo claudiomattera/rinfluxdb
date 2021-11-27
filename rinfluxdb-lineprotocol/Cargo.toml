@@ -1,6 +1,6 @@
 [package]
 name = "rinfluxdb-lineprotocol"
-version = "0.2.0-pre"
+version = "0.2.0"
 repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"

@@ -1,6 +1,6 @@
 [package]
 name = "rinfluxdb-polars"
-version = "0.2.0-pre"
+version = "0.2.0"
 repository = "https://gitlab.com/claudiomattera/rinfluxdb"
 authors = ["Claudio Mattera <dev@claudiomattera.it>"]
 description = "A library for querying and posting data to InfluxDB"
@@ -24,7 +24,7 @@ name = "rinfluxdb_polars"
 path = "src/lib.rs"
 
 [dependencies]
-rinfluxdb-types = { version = "=0.2.0-pre", path = "../rinfluxdb-types" }
+rinfluxdb-types = { version = "=0.2.0", path = "../rinfluxdb-types" }
 polars = { version = "0.16", features = ["dtype-u64"] }
 
 chrono = "0.4"
